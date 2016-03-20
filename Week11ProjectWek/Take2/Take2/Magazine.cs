@@ -58,6 +58,8 @@ namespace Take2
             for (int i = 3; i < 6; i++)
             {
                 Console.WriteLine("{0} - Status: {1}", resources[i].Title, resources[i].Status);
+                Console.WriteLine("\tISBN: {0}\n\tLength: {1} pages", resources[i].ISBN, resources[i].Length);
+                Console.WriteLine();
             }
 
             Console.WriteLine("\n\nEnter the name of the resource you want to check in: ");
@@ -144,6 +146,8 @@ namespace Take2
             for (int i = 3; i < 6; i++)
             {
                 Console.WriteLine("{0} - Status: {1}", resources[i].Title, resources[i].Status);
+                Console.WriteLine("\tISBN: {0}\n\tLength: {1} pages", resources[i].ISBN, resources[i].Length);
+                Console.WriteLine();
             }
 
             Console.WriteLine("\n\nEnter the name of the resource you want to check out: ");

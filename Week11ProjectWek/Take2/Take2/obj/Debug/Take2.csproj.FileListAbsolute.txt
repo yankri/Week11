@@ -4,3 +4,9 @@ C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Take2\Take2\bin\Debug\Take2.exe
 C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Take2\Take2\bin\Debug\Take2.pdb
 C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Take2\Take2\obj\Debug\Take2.exe
 C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Take2\Take2\obj\Debug\Take2.pdb
+C:\Users\WeCanCodeIT\Documents\Week11\Week11ProjectWek\Take2\Take2\bin\Debug\Take2.exe.config
+C:\Users\WeCanCodeIT\Documents\Week11\Week11ProjectWek\Take2\Take2\obj\Debug\Take2.exe
+C:\Users\WeCanCodeIT\Documents\Week11\Week11ProjectWek\Take2\Take2\obj\Debug\Take2.pdb
+C:\Users\WeCanCodeIT\Documents\Week11\Week11ProjectWek\Take2\Take2\bin\Debug\Take2.exe
+C:\Users\WeCanCodeIT\Documents\Week11\Week11ProjectWek\Take2\Take2\bin\Debug\Take2.pdb
+C:\Users\WeCanCodeIT\Documents\Week11\Week11ProjectWek\Take2\Take2\obj\Debug\Take2.csprojResolveAssemblyReference.cache
