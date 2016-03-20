@@ -1,0 +1,6 @@
+C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Week11PW\Week11PW\bin\Debug\Week11PW.exe.config
+C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Week11PW\Week11PW\bin\Debug\Week11PW.exe
+C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Week11PW\Week11PW\bin\Debug\Week11PW.pdb
+C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Week11PW\Week11PW\obj\Debug\Week11PW.csprojResolveAssemblyReference.cache
+C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Week11PW\Week11PW\obj\Debug\Week11PW.exe
+C:\Users\WeCanCodeIT\Documents\Week11ProjectWek\Week11PW\Week11PW\obj\Debug\Week11PW.pdb
