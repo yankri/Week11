@@ -63,9 +63,9 @@ namespace Take2
         {
             List<Resource> resources = new List<Resource>()
             {
-                new DVD (),
                 new DVD(),
-                new DVD (),
+                new DVD(),
+                new DVD(),
                 new Magazine(),
                 new Magazine(),
                 new Magazine(),
@@ -128,18 +128,7 @@ namespace Take2
             {
                 for (int i = 0; i < resources.Count; i++)
                 {
-                    if (i < 3)
-                    {
-                        writer.WriteLine(resources[i].Title + " (DVD)");
-                    }
-                    if (i > 2 && i < 6)
-                    {
-                        writer.WriteLine(resources[i].Title + " (Magazine)");
-                    }
-                    if (i > 5)
-                    {
-                        writer.WriteLine(resources[i].Title + " (Book)");
-                    }
+                    writer.WriteLine(resources[i].Title + " (" + resources[i].GetType().Name + ")");
                 }
             }
 

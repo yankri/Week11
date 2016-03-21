@@ -2,48 +2,33 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Take2
 {
     class DVD : Resource
     {
         string filename = "DVDList.txt";
-        public string Filename { get; set; }
 
-        public DVD ()
+        public override string Filename
         {
-            Filename = filename;
+            get
+            {
+                return filename;
+            }
         }
 
+        public override string LengthType
+        {
+            get
+            {
+                return "minutes";
+            }
+        }
+
+        
         public override void CheckInResource(List<Resource> resources, Dictionary<string, List<string>> students)
         {
-            string namevalue;
-
-            while (true)
-            {
-                Console.Clear();
-                foreach (KeyValuePair<string, List<string>> pair in students)
-                {
-                    Console.WriteLine(pair.Key);
-                }
-
-                Console.WriteLine("Enter the name of the student to access their account: ");
-                string name = Console.ReadLine();
-
-                if (students.Keys.Contains(name))
-                {
-                    namevalue = name;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("That student does not exist.");
-                    Console.ReadKey();
-                    continue;
-                }
-            }
+            string namevalue = GetNameValue(students);
 
             if (students[namevalue].Count == 0)
             {
@@ -54,191 +39,106 @@ namespace Take2
             
             Console.Clear();
 
-            for (int i = 0; i < 3; i++)
+            var dvds = resources.Where(x => x.GetType().Name == "DVD");
+
+            foreach (DVD deevdee in dvds)
             {
-                Console.WriteLine("{0} - Status: {1}", resources[i].Title, resources[i].Status);
-                Console.WriteLine("\tISBN: {0}\n\tLength: {1} minutes", resources[i].ISBN, resources[i].Length);
+                Console.WriteLine("{0} - Status: {1}", deevdee.Title, deevdee.Status);
+                Console.WriteLine("\tISBN: {0}\n\tLength: {1} minutes", deevdee.ISBN, deevdee.Length);
                 Console.WriteLine();
             }
 
             Console.WriteLine("\n\nEnter the name of the resource you want to check in: ");
             string input = Console.ReadLine();
 
-            for (int i = 0; i < 3; i++)
+            if (!dvds.Select(x => x.Title).ToArray().Contains(input, StringComparer.InvariantCultureIgnoreCase))
             {
-                if (input.Equals(resources[i].Title, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    if (resources[i].Status == "Checked Out")
-                    {
-                        resources[i].Status = "Available";
-                        Console.WriteLine("{0} has been checked in.", resources[i].Title);
-                        Console.ReadKey();
-                        students[namevalue].Remove(resources[i].Title);
-                        WriteIndividualResourceTypeFile(resources);
-                        WriteStudentFile(students, namevalue);
-                        Program.WriteAllResourcesFile(resources);
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine("That resource is not available.");
-                        Console.ReadKey();
-                        return;
-                    }
-                }
-                else if (i == 2 && !input.Equals(resources[i].Title, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Console.WriteLine("That resource does not exist.");
-                    Console.ReadKey();
-                    return;
-                }
-                else
-                {
-                    continue;
-                }
+                Console.WriteLine("That resource does not exist.");
+                Console.ReadKey();
+                return;
+            }
+
+            var dvdtoCheckout = resources.Where(x => x.Status == "Checked Out" && x.Title.Equals(input, StringComparison.InvariantCultureIgnoreCase));
+            var dvd2 = dvdtoCheckout.First();
+
+            if (dvdtoCheckout.Count() > 0 && students[namevalue].Contains(dvd2.Title.ToString(), StringComparer.InvariantCultureIgnoreCase))
+            {
+                dvd2.Status = "Available";
+                Console.WriteLine("{0} has been checked in.", dvd2.Title);
+                students[namevalue].Remove(dvd2.Title);
+                WriteIndividualResourceTypeFile(resources, dvds);
+                WriteStudentFile(students, namevalue);
+                Program.WriteAllResourcesFile(resources);
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("That resource is not checked out.");
+                Console.ReadKey();
+                return;
             }
         }
 
-        public override void WriteIndividualResourceTypeFile(List<Resource> resources)
+        public override void WriteIndividualResourceTypeFile(List<Resource> resources, IEnumerable<Resource> resourcestowrite)
         {
-            StreamWriter writer = new StreamWriter(Filename);
-
-            using (writer)
-            {
-                for (int i = 0; i < 3; i++)
-                {
-                    writer.WriteLine(resources[i].Title + "-" + resources[i].ISBN + "-" + resources[i].Length + "-" + resources[i].Status);
-                }
-            }
+            base.WriteIndividualResourceTypeFile(resources, resourcestowrite);
         }
 
         public override void CheckOutResource(List<Resource> resources, Dictionary<string, List<string>> students)
         {
-            string namevalue;
-            while (true)
-            {
-                Console.Clear();
-
-                foreach (KeyValuePair<string, List<string>> pair in students)
-                {
-                    Console.WriteLine(pair.Key);
-                }
-
-                Console.WriteLine("Enter the name of the student to access their account: ");
-                string name = Console.ReadLine();
-
-                if (students.Keys.Contains(name))
-                {
-                    namevalue = name;
-                    break;
-                }
-                else
-                {
-                    Console.WriteLine("That student does not exist.");
-                    Console.ReadKey();
-                    continue;
-                }
-            }
+            string namevalue = GetNameValue(students);
 
             Console.Clear();
 
-            for (int i = 0; i < 3; i++)
+            var deevdee = resources.Where(x => x.GetType().Name == "DVD");
+
+            foreach (DVD dvd in deevdee)
             {
-                Console.WriteLine("{0} - Status: {1}", resources[i].Title, resources[i].Status);
-                Console.WriteLine("\tISBN: {0}\n\tLength: {1} minutes", resources[i].ISBN, resources[i].Length);
+                Console.WriteLine("{0} - Status: {1}", dvd.Title, dvd.Status);
+                Console.WriteLine("\tISBN: {0}\n\tLength: {1} minutes", dvd.ISBN, dvd.Length);
                 Console.WriteLine();
             }
 
             Console.WriteLine("\n\nEnter the name of the resource you want to check out: ");
             string input = Console.ReadLine();
-
-            for (int i = 0; i < 3; i++)
+            
+            if (!deevdee.Select(x => x.Title).ToArray().Contains(input, StringComparer.InvariantCultureIgnoreCase))
             {
-                if (input.Equals(resources[i].Title, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    if (resources[i].Status == "Available")
-                    {
-                        resources[i].Status = "Checked Out";
-                        Console.WriteLine("{0} has been checked out.", resources[i].Title);
-                        students[namevalue].Add(resources[i].Title);
-                        WriteIndividualResourceTypeFile(resources);
-                        WriteStudentFile(students, namevalue);
-                        Program.WriteAllResourcesFile(resources);
-                        return;
-                    }
-                    else
-                    {
-                        Console.WriteLine("That resource is not available.");
-                    }
-                }
-                else if (i == 3 && !input.Equals(resources[i].Title, StringComparison.CurrentCultureIgnoreCase))
-                {
-                    Console.WriteLine("That resource does not exist.");
-                    Console.ReadKey();
-                    return;
-                }
-                else
-                {
-                    continue;
-                }
+                Console.WriteLine("That resource does not exist.");
+                Console.ReadKey();
+                return;
+            }
 
+            var dvdtoCheckout = resources.Where(x => x.Status == "Available" && x.Title.Equals(input, StringComparison.InvariantCultureIgnoreCase));
+
+            if (dvdtoCheckout.Count() > 0)
+            {
+                var dvd1 = dvdtoCheckout.First();
+                dvd1.Status = "Checked Out";
+                Console.WriteLine("{0} has been checked out.", dvd1.Title);
+                students[namevalue].Add(dvd1.Title);
+                WriteIndividualResourceTypeFile(resources, deevdee);
+                WriteStudentFile(students, namevalue);
+                Program.WriteAllResourcesFile(resources);
+                Console.ReadKey();
+                return;
+            }
+            else
+            {
+                Console.WriteLine("That resource is not available.");
+                Console.ReadKey();
+                return;
             }
         }
 
-        public override void EditResource(List<Resource> resource)
+        public void DVDEditResource(List<Resource> resource)
         {
             Console.Clear();
-            for (int i = 0; i < 3; i++)
-            {
-                Console.WriteLine(resource[i].Title);
-            }
 
-            Console.WriteLine("\n\nEnter the resource you want to edit:");
-            string input = Console.ReadLine();
+            var dvds = resource.Where(x => x.GetType().Name == "DVD").ToList();
 
-            for (int i = 0; i <3; i++)
-            {
-                if (input.Equals(resource[i].Title, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    Console.Clear();
-                    Console.WriteLine("Current Information: ");
-                    Console.WriteLine("Title: {0}", resource[i].Title);
-                    Console.WriteLine("ISBN: {0}", resource[i].ISBN);
-                    Console.WriteLine("Length: {0} minutes", resource[i].Length);
-                    Console.WriteLine("Status: {0}", resource[i].Status);
-
-                    Console.WriteLine("\n\nEnter new information: ");
-                    Console.WriteLine("Title: ");
-                    string title = Console.ReadLine();
-                    resource[i].Title = title;
-
-                    Console.WriteLine("ISBN: ");
-                    string isbn = Console.ReadLine();
-                    resource[i].ISBN = isbn;
-
-                    Console.WriteLine("Length: ");
-                    uint length = uint.Parse(Console.ReadLine());
-                    resource[i].Length = length;
-
-                    Console.Clear();
-                    Console.WriteLine("Edited information: ");
-                    Console.WriteLine("Title: {0}", resource[i].Title);
-                    Console.WriteLine("ISBN: {0}", resource[i].ISBN);
-                    Console.WriteLine("Length: {0} minutes", resource[i].Length);
-                    Console.WriteLine("Status: {0}", resource[i].Status);
-                    RewriteAllFiles(resource);
-                    Program.WriteAllResourcesFile(resource);
-                    Console.ReadKey();
-                    return;
-                }
-                else if (i == 2 && !input.Equals(resource[i].Title, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    Console.WriteLine("That resource does not exist.");
-                    Console.ReadKey();
-                    return;
-                }
-            }
-
+            EditResource(resource, dvds);
         }
     }
 }

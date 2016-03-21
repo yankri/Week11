@@ -2,19 +2,17 @@
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Threading;
 
 namespace Take2
 {
     class Menu
     {
-        public void PrintAllStudentNames()
+        public void PrintAllFromFile(string fileName)
         {
             Console.Clear();
 
-            StreamReader reader = new StreamReader("StudentList.txt");
+            StreamReader reader = new StreamReader(fileName);
 
             using (reader)
             {
@@ -27,20 +25,14 @@ namespace Take2
             Console.ReadKey();
         }
 
+        public void PrintAllStudentNames()
+        {
+            PrintAllFromFile("StudentList.txt");
+        }
+
         public void PrintAllResources()
         {
-            Console.Clear();
-            StreamReader reader = new StreamReader("ResourceList.txt");
-
-            using (reader)
-            {
-                while (!reader.EndOfStream)
-                {
-                    string line = reader.ReadLine();
-                    Console.WriteLine(line);
-                }
-            }
-            Console.ReadKey();
+            PrintAllFromFile("ResourceList.txt");
         }
 
         public void PrintMenu() //prints the main menu
@@ -426,13 +418,13 @@ namespace Take2
                 switch (input)
                 {
                     case "A":
-                        book.EditResource(resources);
+                        book.BookEditResource(resources);
                         break;
                     case "B":
-                        dvd.EditResource(resources);
+                        dvd.DVDEditResource(resources);
                         break;
                     case "C":
-                        mags.EditResource(resources);
+                        mags.MagEditResource(resources);
                         break;
                     default:
                         continue;
